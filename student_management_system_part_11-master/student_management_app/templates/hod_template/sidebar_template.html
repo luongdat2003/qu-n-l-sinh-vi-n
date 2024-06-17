@@ -101,6 +101,25 @@
             </a>
           </li>
           <li class="nav-item">
+            {% url 'add_grade' as add_grade %}
+            <a href="{% url 'add_grade' %}" class="nav-link {% if request.path == add_grade %} active {% endif %}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Add grade
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'manage_grade' as manage_grade %}
+            {% url 'edit_grade' grade_id=id as edit_grade %}
+            <a href="{% url 'manage_grade' %}" class="nav-link {% if request.path == manage_grade %} active {% endif %} {% if request.path == edit_grade %} active {% endif %} ">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Manage grade
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             {% url 'manage_subject' as manage_subject %}
             {% url 'edit_subject' subject_id=id as edit_subject %}
             <a href="{% url 'manage_subject' %}" class="nav-link {% if request.path == manage_subject %} active {% endif %} {% if request.path == edit_subject %} active {% endif %} ">

@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from student_management_app.forms import AddStudentForm, EditStudentForm
 from student_management_app.models import CustomUser, Staffs, Courses, Subjects, Students, SessionYearModel, \
     FeedBackStudent, FeedBackStaffs, LeaveReportStudent, LeaveReportStaff, Attendance, AttendanceReport, \
-    NotificationStudent, NotificationStaffs
+    NotificationStudent, NotificationStaffs, Grades
 
 
 def admin_home(request):
@@ -178,6 +178,29 @@ def add_subject_save(request):
             messages.error(request,"Failed to Add Subject")
             return HttpResponseRedirect(reverse("add_subject"))
 
+def add_grade(request):
+    courses=Courses.objects.all()
+    students=CustomUser.objects.filter(user_type=3)
+    return render(request,"hod_template/add_grade_template.html",{"students":students,"courses":courses})
+
+def add_grade_save(request):
+    if request.method!="POST":
+        return HttpResponse("<h2>Method Not Allowed</h2>")
+    else:
+        grade=request.POST.get("grade")
+        course_id=request.POST.get("course")
+        course=Courses.objects.get(id=course_id)
+        student_id=request.POST.get("student")
+        student=CustomUser.objects.get(id=student_id)
+
+        try:
+            grade=Grades(grade=grade,course_id=course,student_id=student)
+            grade.save()
+            messages.success(request,"Successfully Added grade")
+            return HttpResponseRedirect(reverse("add_grade"))
+        except:
+            messages.error(request,"Failed to Add grade")
+            return HttpResponseRedirect(reverse("add_grade"))
 
 def manage_staff(request):
     staffs=Staffs.objects.all()
@@ -194,6 +217,10 @@ def manage_course(request):
 def manage_subject(request):
     subjects=Subjects.objects.all()
     return render(request,"hod_template/manage_subject_template.html",{"subjects":subjects})
+
+def manage_grade(request):
+    grades=Grades.objects.all()
+    return render(request,"hod_template/manage_grade_template.html",{"grades":grades})
 
 def edit_staff(request,staff_id):
     staff=Staffs.objects.get(admin=staff_id)
