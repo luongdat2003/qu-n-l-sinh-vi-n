@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from student_management_app.models import Students, Courses, Subjects, CustomUser, Attendance, AttendanceReport, \
-    LeaveReportStudent, FeedBackStudent, NotificationStudent, StudentResult, OnlineClassRoom, SessionYearModel
+    LeaveReportStudent, FeedBackStudent, NotificationStudent, StudentResult, OnlineClassRoom, SessionYearModel, Grades
 
 
 def student_home(request):
@@ -92,7 +92,6 @@ def student_apply_leave_save(request):
     else:
         leave_date=request.POST.get("leave_date")
         leave_msg=request.POST.get("leave_msg")
-
         student_obj=Students.objects.get(admin=request.user.id)
         try:
             leave_report=LeaveReportStudent(student_id=student_obj,leave_date=leave_date,leave_message=leave_msg,leave_status=0)
@@ -172,6 +171,12 @@ def student_all_notification(request):
     return render(request,"student_template/all_notification.html",{"notifications":notifications})
 
 def student_view_result(request):
-    student=Students.objects.get(admin=request.user.id)
-    studentresult=StudentResult.objects.filter(student_id=student.id)
-    return render(request,"student_template/student_result.html",{"studentresult":studentresult})
+    grades = Grades.objects.filter(student_id=request.user.id)
+    point=0
+    credit=0
+    for grade in grades:
+        course = Courses.objects.get(id=grade.course_id.id)
+        point += grade.four_points_scale * course.credit
+        credit+=course.credit
+    point/=credit
+    return render(request,"student_template/student_result.html",{"grades":grades,"avg":point})

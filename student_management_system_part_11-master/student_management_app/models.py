@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 class SessionYearModel(models.Model):
@@ -33,6 +34,7 @@ class Staffs(models.Model):
 class Courses(models.Model):
     id=models.AutoField(primary_key=True)
     course_name=models.CharField(max_length=255)
+    credit=models.IntegerField(default=2)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now_add=True)
     objects=models.Manager()
@@ -49,7 +51,8 @@ class Subjects(models.Model):
     
 class Grades(models.Model):
     id=models.AutoField(primary_key=True)
-    grade=models.FloatField(default=0)
+    grade = models.FloatField(default=0,validators=[MinValueValidator(0),MaxValueValidator(10)])
+    four_points_scale=models.FloatField(default=0,validators=[MinValueValidator(0),MaxValueValidator(4)])
     course_id=models.ForeignKey(Courses,on_delete=models.CASCADE,default=1)
     student_id=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
@@ -149,8 +152,8 @@ class StudentResult(models.Model):
     id=models.AutoField(primary_key=True)
     student_id=models.ForeignKey(Students,on_delete=models.CASCADE)
     subject_id=models.ForeignKey(Subjects,on_delete=models.CASCADE)
-    subject_exam_marks=models.FloatField(default=0)
-    subject_assignment_marks=models.FloatField(default=0)
+    ten_points_scale=models.FloatField(default=0)
+    four_points_scale=models.FloatField(default=0)
     created_at=models.DateField(auto_now_add=True)
     updated_at=models.DateField(auto_now_add=True)
     objects=models.Manager()

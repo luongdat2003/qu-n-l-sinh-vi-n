@@ -30,7 +30,8 @@ Manage Grade
                   <thead>
                     <tr>
                       <th>Student Name</th>
-                      <th>Grade</th>
+                      <th>ten_point_scale</th>
+                      <th>four_point_scale</th>
                       <th>Course Name</th>
                       <th>Action</th>
                     </tr>
@@ -40,6 +41,7 @@ Manage Grade
                     <tr>
                       <td>{{ grade.student_id.first_name }} {{ grade.student_id.last_name }}</td>
                       <td>{{ grade.grade }}</td>
+                      <td>{{ grade.four_points_scale }}</td>
                       <td>{{ grade.course_id.course_name }}</td>
                       <td><a href="/edit_grade/{{ grade.id }}" class="btn btn-success">Edit</a></td>
                     </tr>

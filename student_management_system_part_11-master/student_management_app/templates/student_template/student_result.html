@@ -19,20 +19,18 @@ Result
                <div class="table">
                <table class="table">
                    <tr>
-                       <th>ID</th>
-                       <th>Subject</th>
-                       <th>Assignment Marks</th>
-                       <th>Exam Marks</th>
+                       <th>Course</th>
+                       <th>Ten_points_sclae</th>
+                       <th>Four_points_scale</th>
                        <th>Status</th>
                    </tr>
-                   {% for row in studentresult %}
+                   {% for row in grades %}
                         <tr>
-                            <td>{{ row.id }}</td>
-                            <td>{{ row.subject_id.subject_name }}</td>
-                            <td>{{ row.subject_assignment_marks }}</td>
-                            <td>{{ row.subject_exam_marks }}</td>
+                            <td>{{ row.course_id.course_name }}</td>
+                            <td>{{ row.grade }}</td>
+                            <td>{{ row.four_points_scale }}</td>
                             <td>
-                                {% if row.subject_exam_marks >= 40 %}
+                                {% if row.grade >= 4 %}
                                 <span class="alert alert-success">PASS</span>
                                 {% else %}
                                  <span class="alert alert-danger">FAIL</span>
@@ -41,6 +39,28 @@ Result
                         </tr>
                    {% endfor %}
                </table>
+               <div class="alert alert">
+                 <tr>
+                  <th>  Điểm trung bình là: </th>
+                 </tr>
+                 <tr>
+                  <td> {{avg}} </td>
+                 </tr>
+               </div>
+               <div>
+                <tr>
+                  <th></th>
+                </tr>
+                <tr>
+                  <td> 
+                    {% if avg >= 3 %}
+                      <span class="alert alert-success">Đủ điểm làm đồ án tốt nghiệp</span>
+                      {% else %}
+                      <span class="alert alert-danger">Không đủ điểm làm đồ án tốt nghiệp</span>
+                      {% endif %}
+                  </td>
+                </tr>
+               </div>
                </div>
             </div>
 

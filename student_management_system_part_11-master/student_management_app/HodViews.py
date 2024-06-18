@@ -99,8 +99,9 @@ def add_course_save(request):
         return HttpResponse("Method Not Allowed")
     else:
         course=request.POST.get("course")
+        credit=request.POST.get("credit")
         try:
-            course_model=Courses(course_name=course)
+            course_model=Courses(course_name=course,credit=credit)
             course_model.save()
             messages.success(request,"Successfully Added Course")
             return HttpResponseRedirect(reverse("add_course"))
@@ -187,14 +188,31 @@ def add_grade_save(request):
     if request.method!="POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
     else:
-        grade=request.POST.get("grade")
+        grade = float(request.POST.get("grade"))
         course_id=request.POST.get("course")
         course=Courses.objects.get(id=course_id)
         student_id=request.POST.get("student")
         student=CustomUser.objects.get(id=student_id)
-
+        if grade >9.3:
+            four_points_scale=4
+        elif grade >8.5:
+            four_points_scale=3.7
+        elif grade >7.8:
+            four_points_scale=3.5
+        elif grade >7.0:
+            four_points_scale=3.0
+        elif grade >6.3:
+            four_points_scale=2.5
+        elif grade >5.5:
+            four_points_scale=2.0
+        elif grade >4.8:
+            four_points_scale=1.5
+        elif grade >4.0:
+            four_points_scale=1.0
+        else:
+            four_points_scale=0
         try:
-            grade=Grades(grade=grade,course_id=course,student_id=student)
+            grade=Grades(grade=grade,four_points_scale=four_points_scale,course_id=course,student_id=student)
             grade.save()
             messages.success(request,"Successfully Added grade")
             return HttpResponseRedirect(reverse("add_grade"))
