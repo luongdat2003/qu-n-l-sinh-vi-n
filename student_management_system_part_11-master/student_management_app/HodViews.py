@@ -193,6 +193,11 @@ def add_grade_save(request):
         course=Courses.objects.get(id=course_id)
         student_id=request.POST.get("student")
         student=CustomUser.objects.get(id=student_id)
+        grades=Grades.objects.all()
+        existing_grade = Grades.objects.filter(course_id=course, student_id=student).exists()
+        if existing_grade:
+            messages.error(request, "Grade for this course and student already exists.")
+            return HttpResponseRedirect(reverse("add_grade"))
         if grade >9.3:
             four_points_scale=4
         elif grade >8.5:
@@ -373,7 +378,11 @@ def edit_subject_save(request):
             messages.error(request,"Failed to Edit Subject")
             return HttpResponseRedirect(reverse("edit_subject",kwargs={"subject_id":subject_id}))
 
-
+def delete_grade(request,grade_id):
+    grade = Grades.objects.get(id=grade_id)
+    grade.delete()  
+    return HttpResponseRedirect(reverse("manage_grades"))
+        
 def edit_course(request,course_id):
     course=Courses.objects.get(id=course_id)
     return render(request,"hod_template/edit_course_template.html",{"course":course,"id":course_id})

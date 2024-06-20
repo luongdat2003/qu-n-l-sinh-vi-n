@@ -33,7 +33,7 @@ Manage Grade
                       <th>ten_point_scale</th>
                       <th>four_point_scale</th>
                       <th>Course Name</th>
-                      <th>Action</th>
+                      {% comment %} <th>Action</th> {% endcomment %}
                     </tr>
                   </thead>
                   <tbody>
@@ -43,7 +43,7 @@ Manage Grade
                       <td>{{ grade.grade }}</td>
                       <td>{{ grade.four_points_scale }}</td>
                       <td>{{ grade.course_id.course_name }}</td>
-                      <td><a href="/edit_grade/{{ grade.id }}" class="btn btn-success">Edit</a></td>
+                      {% comment %} <td><a href="/delete_grade/{{ grade.id }}" class="btn btn-danger">delete</a></td> {% endcomment %}
                     </tr>
                   {% endfor %}
                   </tbody>

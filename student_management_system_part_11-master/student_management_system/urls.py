@@ -24,6 +24,7 @@ from student_management_app.EditResultVIewClass import EditResultViewClass
 from student_management_system import settings
 
 urlpatterns = [
+    path('', views.home, name="home"),
     path('demo',views.showDemoPage),
     path('signup_admin',views.signup_admin,name="signup_admin"),
     path('signup_student',views.signup_student,name="signup_student"),
@@ -33,7 +34,7 @@ urlpatterns = [
     path('do_signup_student',views.do_signup_student,name="do_signup_student"),
     path('admin/', admin.site.urls),
     path('accounts/',include('django.contrib.auth.urls')),
-    path('',views.ShowLoginPage,name="show_login"),
+    path('login',views.ShowLoginPage,name="show_login"),
     path('get_user_details', views.GetUserDetails),
     path('logout_user', views.logout_user,name="logout"),
     path('doLogin',views.doLogin,name="do_login"),
@@ -59,6 +60,7 @@ urlpatterns = [
     path('edit_student_save', HodViews.edit_student_save,name="edit_student_save"),
     path('edit_subject/<str:subject_id>', HodViews.edit_subject,name="edit_subject"),
     path('edit_subject_save', HodViews.edit_subject_save,name="edit_subject_save"),
+    path('delete_grade/<str:grade_id>', HodViews.delete_grade,name="delete_grade"),
     path('edit_course/<str:course_id>', HodViews.edit_course,name="edit_course"),
     path('edit_course_save', HodViews.edit_course_save,name="edit_course_save"),
     path('manage_session', HodViews.manage_session,name="manage_session"),
