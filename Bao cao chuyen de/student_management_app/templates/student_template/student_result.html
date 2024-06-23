@@ -1,0 +1,74 @@
+{% extends 'student_template/base_template.html' %}
+{% block page_title %}
+Kết quả học tập
+{% endblock page_title %}
+{% block main_content %}
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+                    <div class="row">
+              <div class="col-md-12">
+            <!-- general form elements -->
+
+            <!-- /.card -->
+           <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Kết quả học tập</h3>
+              </div>
+
+               <div class="table">
+               <table class="table">
+                   <tr>
+                       <th>Học phần</th>
+                       <th>Điểm hệ số 10</th>
+                       <th>Điểm hệ số 4</th>
+                       <th>Trạng thái</th>
+                   </tr>
+                   {% for row in grades %}
+                        <tr>
+                            <td>{{ row.course_id.course_name }}</td>
+                            <td>{{ row.grade }}</td>
+                            <td>{{ row.four_points_scale }}</td>
+                            <td>
+                                {% if row.grade >= 4 %}
+                                <span class="alert alert-success">PASS</span>
+                                {% else %}
+                                 <span class="alert alert-danger">FAIL</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                   {% endfor %}
+               </table>
+               <div class="alert alert">
+                 <tr>
+                  <th>  Điểm trung bình là: </th>
+                 </tr>
+                 <tr>
+                  <td> {{avg}} </td>
+                 </tr>
+               </div>
+               <div>
+                <tr>
+                  <th></th>
+                </tr>
+                <tr>
+                  <td> 
+                    {% if avg >= 3 %}
+                      <span class="alert alert-success">Đủ điểm làm đồ án tốt nghiệp</span>
+                      {% else %}
+                      <span class="alert alert-danger">Không đủ điểm làm đồ án tốt nghiệp</span>
+                      {% endif %}
+                  </td>
+                </tr>
+               </div>
+               </div>
+            </div>
+
+
+
+          </div>
+          </div>
+      </div>
+    </section>
+    <!-- /.content -->
+{% endblock main_content %}
